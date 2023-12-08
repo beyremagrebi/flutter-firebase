@@ -1,5 +1,7 @@
 import 'package:authentication_firebase/screen/Auth.dart';
+import 'package:authentication_firebase/screen/home_screen.dart';
 import 'package:authentication_firebase/screen/login_screen.dart';
+import 'package:authentication_firebase/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 void main() async{
@@ -33,7 +35,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Auth(),
+      //home: const Auth(),
+      routes: {
+        '/':(context)=>const Auth(),
+        'home':(context)=>const HomeScreen(),
+        'signup':(context)=> const SignupScreen(),
+        'signin':(context)=>const LoginScreen()
+      },
     );
   }
 }
