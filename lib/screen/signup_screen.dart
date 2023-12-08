@@ -16,13 +16,31 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController=TextEditingController();
   final _passwordController=TextEditingController();
   final _confirmPasswordController=TextEditingController();
+  String? _signInError;
   @override
   Future signUp() async{
-    if(_confirmPasswordController.text.trim()==_passwordController.text.trim()){
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(), password: _passwordController.text.trim()
-      );
-      Navigator.of(context).pushNamed("/");
+    if(_passwordController.text.trim()!="" ) {
+      if (_confirmPasswordController.text.trim() ==
+          _passwordController.text.trim()) {
+        FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
+        setState(() {
+          _signInError = null;
+        });
+        Navigator.of(context).pushNamed("/");
+      }
+      else{
+        setState(() {
+          // Set the error message based on the sign-in exception
+          _signInError = 'Sign-up failed. Please Confirm password.';
+        });
+      }
+    } else{
+      setState(() {
+        // Set the error message based on the sign-in exception
+        _signInError = 'Sign-up failed. Please Field password required.';
+      });
     }
   }
   @override
@@ -58,6 +76,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 SizedBox(height: 50,),
+                if (_signInError != null) // Display the error if it exists
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      _signInError!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
