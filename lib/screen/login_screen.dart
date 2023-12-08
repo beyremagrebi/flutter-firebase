@@ -14,7 +14,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController=TextEditingController();
 
   Future signIn() async{
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(), password: _passwordController.text.trim()
+    );
+  }
+
+  void openSignup(){
+    Navigator.of(context).pushReplacementNamed("signup");
   }
   @override
   void dispose(){
@@ -22,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,11 +124,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Not yet a memeber? "),
-                        Text("Sign up Now",
-                        style: GoogleFonts.robotoCondensed(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold
-                        ),
+                        GestureDetector(
+                          onTap: openSignup,
+                          child: Text("Sign up Now",
+                          style: GoogleFonts.robotoCondensed(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold
+                          ),
+                          ),
                         )
                       ],
                     )
