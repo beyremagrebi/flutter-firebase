@@ -12,11 +12,23 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController=TextEditingController();
   final _passwordController=TextEditingController();
-
+  String? _signInError;
   Future signIn() async{
-    FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(), password: _passwordController.text.trim()
-    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Clear any previous sign-in errors
+      setState(() {
+        _signInError = null;
+      });
+    } catch (e) {
+      setState(() {
+        // Set the error message based on the sign-in exception
+        _signInError = 'Sign-in failed. Please check your credentials.';
+      });
+    }
   }
 
   void openSignup(){
@@ -55,6 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(height: 50,),
+                    if (_signInError != null) // Display the error if it exists
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _signInError!,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
